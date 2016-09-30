@@ -1,11 +1,46 @@
-[ ] redux
-    [x] actions
-    [x] reducer
-    [ ] container
-
-[ ] DRAW ON CANVAS
-[ ] START STOP BUTTON
+[x] REDUX
+[x] START STOP BUTTON
+[x] RANDOM BUTTON W/ THRESHOLD SLIDER 
+[ ] SET GAME SIZE FORM
 [ ] CLEAR BUTTON
-[ ] RANDOM BUTTON W/ THRESHOLD SLIDER 
+[ ] DRAW ON CANVAS
 [ ] OPTIMIZE ALGO
+    Possibly, pixels should be stored as a string of 1s and 0s
+    '10000000
+     11000000'.indexOf('1')
+
+      generatePixels(pixels) {
+        size = sqrt(pixels.length)
+        aliveindices = indicesOf('1', pixels)
+        indicesToCheck = [].concat(aliveIndices);
+        for idx in aliveIndices {
+          possibleIndicesToCheck = [
+            idx-size-1, idx-size, idx-size+1, 
+            idx-1,                idx+1,
+            idx+size-1, idx+size, idx+size+1]
+          for index in possibleIndicesToCheck {
+            if index not in  indicesToCheck
+              indicesToCheck.push(index)
+            }
+          }
+        }
+
+        then build idxCharObj object structured
+        {
+          [idx]: char,
+          [idx]: char,
+          [idx]: char
+        }
+
+        remove any idx from idxCharObj that is < 0 or greater than pixels.length-1
+
+        str = ''
+        for item, idx in idxCharObj {
+          str += '0'.repeat(idx)
+          str += item
+        }
+
+        return str;
+      }
+
 [ ] FULL SCREEN

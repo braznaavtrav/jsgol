@@ -4,7 +4,7 @@ import {
   HAS_STOPPED_PLAYING,
   SET_FPS,
   SET_GAME_SIZE,
-  TOGGLE_IS_RANDOM,
+  RANDOMIZE,
   SET_RANDOM_THRESHOLD,
   CLEAR  
 } from '../actions';
@@ -49,16 +49,9 @@ const gameBoardOfSize = (size, getValue = returnFalse) => arrayOfN(size).map(() 
  * @param  Integer                gameSize
  * @return Array[Array[Integer]]
  */
-const filterValidCoordinates = (arrayOfCoordinates, gameSize) => {
-  const validCoordinates = [];
-  for (let coordinate in arrayOfCoordinates) {
-    // if coordinate does not contain -1 or gameSize
-    if (coordinate.indexOf(-1) === -1 && coordinate.indexOf(gameSize) === -1) {
-      validCoordinates.push(coordinate);
-    }
-  }
-  return validCoordinates;
-};
+const filterValidCoordinates = (arrayOfCoordinates, gameSize) => arrayOfCoordinates.filter(coordinate => (
+  coordinate.indexOf(-1) === -1 && coordinate.indexOf(gameSize) === -1
+));
 
 /**
  * Find valid coordinates for the neighbors of the `x`, `y` coordinate passed.
@@ -87,8 +80,8 @@ const sumOfNeighbors = (x, y, pixels) => neighborIndices(x,y, pixels.length).red
 const nextStateForPoint = (isAlive, x, y, pixels) => {
   const n = sumOfNeighbors(x, y, pixels);
   if (!isAlive) return n === 3;
-  if (n < 2) return DEAD;
-  if (n <= 3) return LIVE;
+  if (n < 2) return false;
+  if (n <= 3) return true;
 };
 
 const nextPixels = pixels => pixels.map(
@@ -101,21 +94,21 @@ const INITIAL_STATE = {
   step: 0,
   isPlaying: false,
   pixels: gameBoardOfSize(44),
-  isRandom: false,
-  randomThreshold: 0.5
+  randomThreshold: 0.5,
+  interval: undefined
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-  const { isRandom, randomThreshold } = state;
+  const { randomThreshold, pixels } = state;
   switch (action.type) {
     case NEXT_STEP:
       return Object.assign({}, state, { 
         step: state.step + 1,
-        pixels: nextPixels(state.pixels)
+        pixels: nextPixels(pixels)
       });
     
     case HAS_STARTED_PLAYING:
-      return Object.assign({}, state, { isPlaying: true });
+      return Object.assign({}, state, { isPlaying: true, interval: action.interval });
     
     case HAS_STOPPED_PLAYING:
       return Object.assign({}, state, { isPlaying: false });
@@ -124,19 +117,20 @@ export default function reducer(state = INITIAL_STATE, action) {
       return Object.assign({}, state, { fps: action.fps });
     
     case SET_GAME_SIZE:
-      const pixelSetter = isRandom ? () => getRandomizeFn(randomThreshold) : undefined;
       return Object.assign({}, state, {  
-        pixels: gameBoardOfSize(action.gameSize, pixelSetter)
+        pixels: gameBoardOfSize(action.gameSize)
       });
 
-    case TOGGLE_IS_RANDOM:
-      return Object.assign({}, state, { isRandom: !isRandom });
+    case RANDOMIZE:
+      return Object.assign({}, state, { 
+        pixels: gameBoardOfSize(pixels.length, getRandomizeFn(randomThreshold)) 
+      });
 
     case SET_RANDOM_THRESHOLD:
       return Object.assign({}, state, { randomThreshold: action.randomThreshold });
 
     case CLEAR:
-      return Object.assign({}, state, { pixels: gameBoardOfSize(gameSize) })
+      return Object.assign({}, state, { pixels: gameBoardOfSize(pixels.length) })
 
     default:
       return state;

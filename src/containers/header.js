@@ -4,24 +4,26 @@ import {
   setGameSize, 
   nextStep, 
   clear, 
-  toggleIsRandom, 
-  setRandomThreshold
+  toggleIsRandom,
+  toggleIsPlaying,
+  setRandomThreshold,
+  randomize
 } from '../actions';
 import Header from '../components/header';
 
 const mapStateToProps = ({ step, isPlaying, isRandom, randomThreshold }) => ({
   step, 
   isPlaying, 
-  isRandom, 
   randomThreshold
 });
 
 const mapDispatchToProps = dispatch => ({
+  onPlayToggleClick: () => dispatch(toggleIsPlaying()),
   onFpsChange: fps => dispatch(setFps(fps)),
   onGameSizeChange: gameSize => dispatch(setGameSize(gameSize)),
   onClearClick: () => dispatch(clear()), 
-  onRandomToggle: () => dispatch(toggleIsRandom()), 
-  onRandomThresholdChange: threshold => dispatch(setRandomThreshold(threshold))
+  onRandomizeClick: () => dispatch(randomize()), 
+  onRandomThresholdChange: (evt, threshold) => dispatch(setRandomThreshold(threshold))
 });
 
 const HeaderContainer = connect(state => state, mapDispatchToProps)(Header)
