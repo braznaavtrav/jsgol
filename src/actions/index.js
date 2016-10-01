@@ -6,7 +6,7 @@ export const NEXT_STEP = 'NEXT_STEP';
 export const HAS_STARTED_PLAYING = 'HAS_STARTED_PLAYING';
 export const HAS_STOPPED_PLAYING = 'HAS_STOPPED_PLAYING';
 export const SET_FPS = 'SET_FPS';
-export const SET_GAME_SIZE = 'SET_GAME_SIZE';
+export const SET_SQRT = 'SET_SQRT';
 export const RANDOMIZE = 'RANDOMIZE';
 export const SET_RANDOM_THRESHOLD = 'SET_RANDOM_THRESHOLD';
 export const CLEAR = 'CLEAR';
@@ -18,7 +18,7 @@ export const CLEAR = 'CLEAR';
 
 export const setFps = fps => ({ type: SET_FPS, fps });
 
-export const setGameSize = gameSize => ({ type: SET_GAME_SIZE, gameSize });
+export const setSqrt = sqrt => ({ type: SET_SQRT, sqrt });
 
 export const nextStep = () => ({ type: NEXT_STEP });
 

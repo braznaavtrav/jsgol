@@ -1,32 +1,27 @@
 import React, { PropTypes } from 'react';
 
-export const Alive = ({size}) => <div style={({float: 'left', width: size-2, height: size-2, background: '#fff', border: '1px solid #666'})} />;
+const border = '1px solid #4e5060';
+const aliveColor = '#FFD600';
+const deadColor = '#263238';
 
-export const Dead = ({size}) => <div style={({float: 'left', width: size-2, height: size-2, background: '#333', border: '1px solid #666'})} />;
+export const Alive = ({size}) => <div style={({float: 'left', width: size-1, height: size-1, background: aliveColor, borderRight: border, borderBottom: border })} />;
 
+export const Dead = ({size}) => <div style={({float: 'left', width: size-1, height: size-1, background: deadColor, borderRight: border, borderBottom: border })} />;
 
-export const Row = ({ row, size }) => (
-  <div>
-    {row.map((isAlive, i) => isAlive ? (
-      <Alive key={i} size={size} />
+const GameBoard = ({ pixels, squareSize, sqrt }) => (
+  <div style={({ width: sqrt * squareSize })}>
+    {pixels.map((isAlive, i) => isAlive ? (
+      <Alive key={i} size={squareSize} />
     ) : (
-      <Dead key={i} size={size} />
+      <Dead key={i} size={squareSize} />
     ))}
   </div>
-);
-
-Row.propTypes = {
-  row: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  size: PropTypes.number.isRequired
-};
-
-const GameBoard = ({ pixels, squareSize }) => (
-  <div style={({ width: pixels.length * squareSize })}>{pixels.map((row, i) => (<Row key={i} row={row} size={squareSize} />))}</div>
 )
 
 GameBoard.propTypes = {
-  pixels: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)).isRequired,
-  squareSize: PropTypes.number.isRequired
+  pixels: PropTypes.arrayOf(PropTypes.number).isRequired,
+  squareSize: PropTypes.number.isRequired,
+  sqrt: PropTypes.number.isRequired
 };
 
 export default GameBoard;

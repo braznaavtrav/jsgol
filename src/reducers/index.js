@@ -3,7 +3,7 @@ import {
   HAS_STARTED_PLAYING, 
   HAS_STOPPED_PLAYING,
   SET_FPS,
-  SET_GAME_SIZE,
+  SET_SQRT,
   RANDOMIZE,
   SET_RANDOM_THRESHOLD,
   CLEAR  
@@ -12,7 +12,7 @@ import {
 /**
  * Duh... what do you think this does.
  */
-const returnFalse = () => false;
+const returnZero = () => 0;
 
 /**
  * Build an array with length `size`, calling `getValue` for each value
@@ -20,7 +20,7 @@ const returnFalse = () => false;
  * @param  Function value
  * @return Array[Any]
  */
-const arrayOfN = (size, getValue = returnFalse) => {
+const arrayOfN = (size, getValue = returnZero) => {
   const arr = [];
   for (let i = 0; i < size; i++) {
     arr[i] = getValue();
@@ -33,39 +33,16 @@ const arrayOfN = (size, getValue = returnFalse) => {
  * @param  Float
  * @return Function
  */
-const getRandomizeFn = n => () => (Math.random() > (1 - n));
+const getRandomizeFn = n => () => (Math.random() > (1 - n)) ? 1 : 0;
 
 /**
  * Create the matrix of the gameboard. 
  * @param  Integer  size     column/row size
- * @param  Function getValue function to use to set the value of each cell
- * @return Array[Array[Any]]
+ * @param  Boolean  isRandom 
+ * @return Integer
  */
-const gameBoardOfSize = (size, getValue = returnFalse) => arrayOfN(size).map(() => arrayOfN(size, getValue));
+const gameBoardOfSize = (size, getRandomizeFn) => arrayOfN(size, getRandomizeFn);
 
-/**
- * Returns a filtered version of `arrayOfCoordinates` by removing member arrays that contain either -1 or `gameSize`
- * @param  Array[Array[Integer]]  arrayOfCoordinates
- * @param  Integer                gameSize
- * @return Array[Array[Integer]]
- */
-const filterValidCoordinates = (arrayOfCoordinates, gameSize) => arrayOfCoordinates.filter(coordinate => (
-  coordinate.indexOf(-1) === -1 && coordinate.indexOf(gameSize) === -1
-));
-
-/**
- * Find valid coordinates for the neighbors of the `x`, `y` coordinate passed.
- * Coordinates are valid as long as the x and y values are between 0 (inclusive) and gameSize (exclusive)
- * @param  Integer  x
- * @param  Integer  y
- * @param  Integer  gameSize
- * @return Array[Array[Integer]]
- */
-const neighborIndices = (x, y, gameSize) => filterValidCoordinates([
-  [x-1, y-1], [x, y-1], [x+1, y-1], 
-  [x-1, y  ],           [x+1, y  ],
-  [x-1, y+1], [x, y+1], [x+1, y+1] 
-], gameSize);
 
 /**
  * Calculate the number of alive neighbors
@@ -74,63 +51,82 @@ const neighborIndices = (x, y, gameSize) => filterValidCoordinates([
  * @param  Array[Array[Boolean]]  pixels
  * @return Integer
  */
-const sumOfNeighbors = (x, y, pixels) => neighborIndices(x,y, pixels.length).reduce((n, [xx,yy]) => n + (pixels[yy][xx] ? 1 : 0), 0);
+const sumOfNeighbors = (idx, sqrt, pixels) => {
+  let sum = 0;
+
+  if (pixels[idx - sqrt - 1]) sum++;
+  if (pixels[idx - sqrt])     sum++;
+  if (pixels[idx - sqrt + 1]) sum++;
+  if (pixels[idx - 1])        sum++;
+  if (pixels[idx + 1])        sum++;
+  if (pixels[idx + sqrt - 1]) sum++;
+  if (pixels[idx + sqrt])     sum++;
+  if (pixels[idx + sqrt + 1]) sum++;
+
+  return sum;
+}
 
 
-const nextStateForPoint = (isAlive, x, y, pixels) => {
-  const n = sumOfNeighbors(x, y, pixels);
-  if (!isAlive) return n === 3;
-  if (n < 2) return false;
-  if (n <= 3) return true;
+const nextStateForPoint = (isAlive, idx, sqrt, pixels) => {
+  const n = sumOfNeighbors(idx, sqrt, pixels);
+  if (!isAlive) return n === 3 ? 1 : 0;
+  if (n < 2) return 0;
+  if (n <= 3) return 1;
 };
 
-const nextPixels = pixels => pixels.map(
-  (row, y) => row.map(
-    (isAlive, x) => nextStateForPoint(isAlive, x, y, pixels)
-  )
-);
+
+const nextPixels = (sqrt, pixels) => pixels.map((val, idx) => nextStateForPoint(val, idx, sqrt, pixels));
 
 const INITIAL_STATE = {
   step: 0,
   isPlaying: false,
-  pixels: gameBoardOfSize(44),
+  sqrt: 44,
+  squareSize: 10,
+  pixels: gameBoardOfSize(Math.pow(44, 2)),
   randomThreshold: 0.5,
   interval: undefined
 };
 
 export default function reducer(state = INITIAL_STATE, action) {
-  const { randomThreshold, pixels } = state;
+  const { randomThreshold, pixels, sqrt } = state;
   switch (action.type) {
+    
     case NEXT_STEP:
       return Object.assign({}, state, { 
         step: state.step + 1,
-        pixels: nextPixels(pixels)
-      });
+        pixels: nextPixels(sqrt, pixels) });
     
     case HAS_STARTED_PLAYING:
-      return Object.assign({}, state, { isPlaying: true, interval: action.interval });
+      return Object.assign({}, state, { 
+        isPlaying: true, 
+        interval: action.interval });
     
     case HAS_STOPPED_PLAYING:
-      return Object.assign({}, state, { isPlaying: false });
+      return Object.assign({}, state, { 
+        isPlaying: false });
     
     case SET_FPS:
-      return Object.assign({}, state, { fps: action.fps });
+      return Object.assign({}, state, { 
+        fps: action.fps });
     
-    case SET_GAME_SIZE:
-      return Object.assign({}, state, {  
-        pixels: gameBoardOfSize(action.gameSize)
-      });
+    case SET_SQRT:
+      return Object.assign({}, state, {
+        sqrt: action.sqrt,
+        pixels: gameBoardOfSize(Math.pow(action.sqrt, 2)) });
 
     case RANDOMIZE:
       return Object.assign({}, state, { 
-        pixels: gameBoardOfSize(pixels.length, getRandomizeFn(randomThreshold)) 
-      });
+        pixels: gameBoardOfSize(pixels.length, getRandomizeFn(randomThreshold)),
+        step: 0 });
 
     case SET_RANDOM_THRESHOLD:
-      return Object.assign({}, state, { randomThreshold: action.randomThreshold });
+      return Object.assign({}, state, { 
+        randomThreshold: action.randomThreshold });
 
     case CLEAR:
-      return Object.assign({}, state, { pixels: gameBoardOfSize(pixels.length) })
+      return Object.assign({}, state, { 
+        pixels: gameBoardOfSize(pixels.length),
+        step: 0 });
 
     default:
       return state;

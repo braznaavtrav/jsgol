@@ -1,37 +1,49 @@
 import React, { PropTypes } from 'react';
 import Slider from 'material-ui/Slider';
+import AppBar from 'material-ui/AppBar';
 import { 
   Toolbar, 
   ToolbarGroup, 
   ToolbarSeparator, 
   ToolbarTitle
 } from 'material-ui/Toolbar';
+import MenuItem from 'material-ui/MenuItem';
+import Drawer from 'material-ui/Drawer';
+import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 
 
+const FormGroup = ({ children }) => <div style={{ padding: 10 }}>{children}</div>
 
-const Header = ({ step, isPlaying, isRandom, randomThreshold, onFpsChange, onGameSizeChange, onClearClick, onRandomizeClick, onRandomThresholdChange, onPlayToggleClick }) => (
-  <Toolbar>
-    <ToolbarGroup firstChild={true} style={{ marginLeft: 0 }}>
-      <ToolbarTitle text='Game of Life' />
-    </ToolbarGroup>
-    <ToolbarGroup>
-      <ToolbarTitle text={`Random Threshold: ${parseFloat(randomThreshold).toFixed(2)}`} />
-      <Slider 
-        defaultValue={randomThreshold} 
-        onChange={onRandomThresholdChange} 
-        style={{width: 100}}/>
-      <RaisedButton 
-        label="Randomize" 
-        primary={true}
-        onClick={onRandomizeClick} />
-    </ToolbarGroup>
-    <ToolbarGroup lastChild={true}>
-      <ToolbarTitle text={`${step}`} />
-      <RaisedButton label={isPlaying ? 'Stop' : 'Play'} primary={true} onClick={onPlayToggleClick} />
-    </ToolbarGroup>
-  </Toolbar>
+
+const Header = ({ step, sqrt, isPlaying, isRandom, randomThreshold, onFpsChange, onSqrtChange, onClearClick, onRandomizeClick, onRandomThresholdChange, onPlayToggleClick }) => (
+    <Drawer open={true} openSecondary={true} zDepth={1}>
+      <Toolbar>
+        <ToolbarTitle text='Game Of Life' />
+      </Toolbar>
+      <FormGroup>
+        <TextField
+          floatingLabelText='Game Size'
+          floatingLabelFixed={true}
+          value={sqrt}
+          onChange={onSqrtChange} />
+      </FormGroup>
+      <FormGroup>
+        <label>{`Random Threshold: ${parseFloat(randomThreshold).toFixed(2)}`}</label>
+        <Slider
+          defaultValue={randomThreshold} 
+          onChange={onRandomThresholdChange} />
+        <RaisedButton 
+          label="Randomize" 
+          primary={true}
+          onClick={onRandomizeClick} />
+      </FormGroup>
+      <FormGroup>
+        {`${step}`}
+        <RaisedButton label={isPlaying ? 'Stop' : 'Play'} primary={true} onClick={onPlayToggleClick} />
+      </FormGroup>
+    </Drawer>
 );
 
 Header.PropTypes = {
@@ -39,7 +51,7 @@ Header.PropTypes = {
   isPlaying: PropTypes.bool.isRequired,
   randomThreshold: PropTypes.number.isRequired,
   onFpsChange: PropTypes.func.isRequired,
-  onGameSizeChange: PropTypes.func.isRequired,
+  onSqrtChange: PropTypes.func.isRequired,
   onClearClick: PropTypes.func.isRequired,
   onRandomizeClick: PropTypes.func.isRequired,
   onRandomThresholdChange: PropTypes.func.isRequired,

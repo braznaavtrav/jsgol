@@ -9,7 +9,7 @@ const mapDispatchToProps = dispatch => ({
   onRandomThresholdChange: threshold => dispatch(setRandomThreshold(threshold))
 });
 
-const mapStateToProps = ({ pixels }) => ({ pixels, squareSize: 10 });
+const mapStateToProps = ({ pixels, sqrt, squareSize }) => ({ pixels, sqrt, squareSize });
 
 const GameBoardContainer = connect(mapStateToProps)(GameBoard)
 
