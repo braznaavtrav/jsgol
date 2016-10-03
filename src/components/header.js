@@ -17,7 +17,7 @@ import Toggle from 'material-ui/Toggle';
 const FormGroup = ({ children }) => <div style={{ padding: 10 }}>{children}</div>
 
 
-const Header = ({ step, sqrt, isPlaying, isRandom, randomThreshold, onFpsChange, onSqrtChange, onClearClick, onRandomizeClick, onRandomThresholdChange, onPlayToggleClick }) => (
+const Header = ({ step, sqrt, isPlaying, randomThreshold, onFpsChange, onSqrtChange, onClearClick, onRandomThresholdChanged, onRandomThresholdChange, onPlayToggleClick }) => (
     <Drawer open={true} openSecondary={true} zDepth={1}>
       <Toolbar>
         <ToolbarTitle text='Game Of Life' />
@@ -33,11 +33,8 @@ const Header = ({ step, sqrt, isPlaying, isRandom, randomThreshold, onFpsChange,
         <label>{`Random Threshold: ${parseFloat(randomThreshold).toFixed(2)}`}</label>
         <Slider
           defaultValue={randomThreshold} 
+          onDragStop={onRandomThresholdChanged}
           onChange={onRandomThresholdChange} />
-        <RaisedButton 
-          label="Randomize" 
-          primary={true}
-          onClick={onRandomizeClick} />
       </FormGroup>
       <FormGroup>
         {`${step}`}
@@ -53,7 +50,7 @@ Header.PropTypes = {
   onFpsChange: PropTypes.func.isRequired,
   onSqrtChange: PropTypes.func.isRequired,
   onClearClick: PropTypes.func.isRequired,
-  onRandomizeClick: PropTypes.func.isRequired,
+  onRandomThresholdChanged: PropTypes.func.isRequired,
   onRandomThresholdChange: PropTypes.func.isRequired,
   onPlayToggleClick: PropTypes.func.isRequired
 };

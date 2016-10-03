@@ -83,7 +83,7 @@ const INITIAL_STATE = {
   sqrt: 44,
   squareSize: 10,
   pixels: gameBoardOfSize(Math.pow(44, 2)),
-  randomThreshold: 0.5,
+  randomThreshold: 0,
   interval: undefined
 };
 

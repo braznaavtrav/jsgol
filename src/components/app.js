@@ -1,5 +1,6 @@
 import React from 'react';
-import GameBoard from '../containers/game-board';
+import GameStage from '../containers/game-stage';
+import GamePixels from '../containers/game-pixels';
 import Header from '../containers/header';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -8,7 +9,9 @@ const App = () => (
   <MuiThemeProvider muiTheme={getMuiTheme()}>
     <div>
       <Header />
-      <GameBoard />
+      <GameStage>
+        <GamePixels />
+      </GameStage>
     </div>
   </MuiThemeProvider>
 );

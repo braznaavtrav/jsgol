@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => ({
   onFpsChange: fps => dispatch(setFps(fps)),
   onSqrtChange: (evt, sqrt) => sqrt ? dispatch(setSqrt(parseInt(sqrt))) : null,
   onClearClick: () => dispatch(clear()), 
-  onRandomizeClick: () => dispatch(randomize()), 
+  onRandomThresholdChanged: () => dispatch(randomize()), 
   onRandomThresholdChange: (evt, threshold) => dispatch(setRandomThreshold(threshold))
 });
 
