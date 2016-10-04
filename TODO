@@ -1,64 +1,11 @@
 [x] REDUX
 [x] START STOP BUTTON
+[x] OPTIMIZE ALGO
 [x] RANDOM BUTTON W/ THRESHOLD SLIDER 
 [x] SET GAME SIZE FORM
 [ ] CLEAR BUTTON
 [ ] DRAW ON CANVAS
-[ ] OPTIMIZE ALGO
-    Possibly, pixels should be stored as a string of 1s and 0s
-     neighborIndexes(idx, rowSize) => [
-            idx-rowSize-1, idx-rowSize, idx-rowSize+1, 
-            idx-1,                idx+1,
-            idx+rowSize-1, idx+rowSize, idx+rowSize+1]
-
-      generatePixels(pixels) {
-        rowSize = sqrt(pixels.length)
-        aliveindices = indicesOf('1', pixels)
-        indicesToCheck = [].concat(aliveIndices);
-        for idx in aliveIndices {
-          possibleIndicesToCheck = neighborIndexes(idx)
-          for index in possibleIndicesToCheck {
-            if index not in  indicesToCheck
-              indicesToCheck.push(index)
-            }
-          }
-        }
-
-        indicesToCheck = indicesToCheck.filter(n => n > -1 && n < pixels.length)
-
-        idxCharObj = {}
-        for idx in indicesToCheck:
-          isAlive = pixels[idx]
-
-          const n = sumOfNeighbors(x, y, pixels);
-          if (!isAlive) return n === 3;
-          if (n < 2) return false;
-          if (n <= 3) return true;
-          idxCharObj[idx] = 
-
-        then check neighbors for inde build idxCharObj object structured
-        {
-          [idx]: char,
-          [idx]: char,
-          [idx]: char
-        }
-
-        remove any idx from idxCharObj that is < 0 or greater than pixels.length-1
-
-        str = ''
-        for item, idx in idxCharObj {
-          str += '0'.repeat(idx)
-          str += item
-        }
-
-        return str;
-      }
-
-
-      Possibly, pixels should be stored as a large binary number
-
-      generatePixels(pixels) {
-
-      }
-
+[ ] SPHERE MODE
+[ ] MIDI OUTPUT
+[ ] SET FPS
 [ ] FULL SCREEN

@@ -1,16 +1,15 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
+import { identity, map, filter } from 'ramda';
 import {Layer, Rect, Stage, Group} from 'react-konva';
+import { borderColor, aliveColor, deadColor } from './colors';
 
-const borderColor = '#4e5060';
-const aliveColor = '#FFD600';
-const deadColor = '#263238';
 
 const getRow = (sqrt, idx) => idx % sqrt;
 const getCol = (sqrt, idx) => Math.ceil(idx / sqrt) - 1;
 
 const GamePixels = ({ pixels, squareSize, sqrt }) => (
   <Layer>
-      {pixels.map((isAlive, idx) => (
+      {pixels.map((isAlive, idx) => isAlive ? (
         // set position
         <Rect 
           key={idx}
@@ -22,7 +21,7 @@ const GamePixels = ({ pixels, squareSize, sqrt }) => (
           strokeWidth='0.5'
           stroke={borderColor}
           />
-      ))}
+      ) : null )}
   </Layer>
 );
 

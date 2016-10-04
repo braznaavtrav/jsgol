@@ -40,6 +40,9 @@ const Header = ({ step, sqrt, isPlaying, randomThreshold, onFpsChange, onSqrtCha
         {`${step}`}
         <RaisedButton label={isPlaying ? 'Stop' : 'Play'} primary={true} onClick={onPlayToggleClick} />
       </FormGroup>
+      <FormGroup>
+        <RaisedButton label='Clear' primary={true} onClick={onClearClick} />
+      </FormGroup>
     </Drawer>
 );
 

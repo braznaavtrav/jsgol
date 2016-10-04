@@ -8,25 +8,7 @@ import {
   SET_RANDOM_THRESHOLD,
   CLEAR  
 } from '../actions';
-
-/**
- * Duh... what do you think this does.
- */
-const returnZero = () => 0;
-
-/**
- * Build an array with length `size`, calling `getValue` for each value
- * @param  Integer  size
- * @param  Function value
- * @return Array[Any]
- */
-const arrayOfN = (size, getValue = returnZero) => {
-  const arr = [];
-  for (let i = 0; i < size; i++) {
-    arr[i] = getValue();
-  }
-  return arr;
-};
+import { arrayOfN } from '../utils';
 
 /**
  * Takes a float `n` between 0 and 1, returns a function that returns a bool with `n` probability
@@ -82,6 +64,7 @@ const INITIAL_STATE = {
   isPlaying: false,
   sqrt: 44,
   squareSize: 10,
+  fps: 30,
   pixels: gameBoardOfSize(Math.pow(44, 2)),
   randomThreshold: 0,
   interval: undefined

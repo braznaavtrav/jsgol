@@ -3,7 +3,7 @@ import GameStage from '../components/game-stage';
 
 const mapDispatchToProps = dispatch => ({});
 
-const mapStateToProps = ({ pixels, sqrt, squareSize }) => ({ size: sqrt * squareSize });
+const mapStateToProps = ({ sqrt, squareSize }) => ({ sqrt, squareSize });
 
 const GameStageContainer = connect(mapStateToProps)(GameStage)
 
