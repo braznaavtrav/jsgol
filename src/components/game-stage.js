@@ -7,7 +7,7 @@ const GameStage = ({ squareSize, sqrt, children }) => {
   const size = sqrt * squareSize;
   const gridArr = arrayOfN(sqrt);
   return (
-    <Stage width={size} height={size}>
+    <Stage width={window.innerWidth} height={window.innerWidth}>
       <Layer>
         {gridArr.map((val, i) => (
           <Line 

@@ -64,7 +64,7 @@ const INITIAL_STATE = {
   isPlaying: false,
   sqrt: 44,
   squareSize: 10,
-  fps: 30,
+  fps: 24,
   pixels: gameBoardOfSize(Math.pow(44, 2)),
   randomThreshold: 0,
   interval: undefined

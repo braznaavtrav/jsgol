@@ -16,13 +16,9 @@ export const CLEAR = 'CLEAR';
  * ACTION CREATORS
  */
 
-export const setFps = fps => ({ type: SET_FPS, fps });
-
 export const setSqrt = sqrt => ({ type: SET_SQRT, sqrt });
 
 export const nextStep = () => ({ type: NEXT_STEP });
-
-export const clear = () => ({ type: CLEAR });
 
 export const randomize = () => ({ type: RANDOMIZE });
 
@@ -45,6 +41,19 @@ export const stop = () => (dispatch, getState) => {
   const { interval } = getState();
   clearInterval(interval);
   dispatch({ type: HAS_STOPPED_PLAYING });
+};
+
+export const setFps = fps => (dispatch, getState) => {
+  const { isPlaying } = getState();
+  const wasPlaying = isPlaying;
+  if (isPlaying) dispatch(stop());
+  dispatch({ type: SET_FPS, fps });
+  if (wasPlaying) dispatch(start());
+};
+
+export const clear = () => dispatch => {
+  dispatch(stop());
+  dispatch({ type: CLEAR });
 };
 
 export const toggleIsPlaying = () => {

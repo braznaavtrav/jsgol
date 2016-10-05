@@ -11,16 +11,17 @@ import {
 } from '../actions';
 import Header from '../components/header';
 
-const mapStateToProps = ({ step, isPlaying, isRandom, randomThreshold }) => ({
+const mapStateToProps = ({ step, isPlaying, isRandom, randomThreshold, fps }) => ({
   step, 
   sqrt,
   isPlaying, 
-  randomThreshold
+  randomThreshold,
+  fps
 });
 
 const mapDispatchToProps = dispatch => ({
   onPlayToggleClick: () => dispatch(toggleIsPlaying()),
-  onFpsChange: fps => dispatch(setFps(fps)),
+  onFpsChange: (evt, idx, fps) => dispatch(setFps(fps)),
   onSqrtChange: (evt, sqrt) => sqrt ? dispatch(setSqrt(parseInt(sqrt))) : null,
   onClearClick: () => dispatch(clear()), 
   onRandomThresholdChanged: () => dispatch(randomize()), 
