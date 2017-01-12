@@ -3,7 +3,7 @@ import { Stage, Layer, Rect, Line } from 'react-konva';
 import { arrayOfN } from '../utils';
 import { borderColor } from './colors';
 
-const GameStage = ({ squareSize, sqrt, children }) => {
+const GameStage = ({ squareSize, sqrt, children, onDrawPixel }) => {
   const size = sqrt * squareSize;
   const gridArr = arrayOfN(sqrt);
   return (
@@ -45,7 +45,8 @@ const GameStage = ({ squareSize, sqrt, children }) => {
 GameStage.propTypes = {
   squareSize: PropTypes.number.isRequired,
   sqrt: PropTypes.number.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  onDrawPixel: PropTypes.func.isRequired
 };
 
 export default GameStage;

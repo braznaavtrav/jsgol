@@ -10,6 +10,7 @@ export const SET_SQRT = 'SET_SQRT';
 export const RANDOMIZE = 'RANDOMIZE';
 export const SET_RANDOM_THRESHOLD = 'SET_RANDOM_THRESHOLD';
 export const CLEAR = 'CLEAR';
+export const DRAW_PIXEL = 'DRAW_PIXEL';
 
 
 /**
@@ -23,6 +24,8 @@ export const nextStep = () => ({ type: NEXT_STEP });
 export const randomize = () => ({ type: RANDOMIZE });
 
 export const setRandomThreshold = randomThreshold => ({ type: SET_RANDOM_THRESHOLD, randomThreshold });
+
+export const drawPixel = idx => ({ type: DRAW_PIXEL, idx });
 
 
 /**

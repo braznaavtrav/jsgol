@@ -6,7 +6,8 @@ import {
   SET_SQRT,
   RANDOMIZE,
   SET_RANDOM_THRESHOLD,
-  CLEAR  
+  CLEAR,
+  DRAW_PIXEL
 } from '../actions';
 import { arrayOfN } from '../utils';
 
@@ -110,6 +111,10 @@ export default function reducer(state = INITIAL_STATE, action) {
       return Object.assign({}, state, { 
         pixels: gameBoardOfSize(pixels.length),
         step: 0 });
+
+    case DRAW_PIXEL:
+      return Object.assign({}, state, {
+        pixels: pixels.map((isAlive, idx) => idx === action.idx ? action.isAlive : isAlive) });
 
     default:
       return state;
